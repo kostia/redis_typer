@@ -1,6 +1,6 @@
 # RedisTyper
 
-TODO: Write a gem description
+Experimental implementation of a Redis wrapper in Ruby
 
 ## Installation
 
@@ -18,7 +18,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+my_hash = RedisTyper::RedisHash.create('my_hash', spam: 'eggs')
+my_hash.spam   # => 'eggs'
+my_hash.update(xxx: 'zzz')
+my_hash.save
+my_hash.xxx    # => 'zzz'
+my_hash.length # => 2
+my_hash.values # => #<Set: {"eggs", "zzz"}>
+```
 
 ## Contributing
 
