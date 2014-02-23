@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = RedisTyper::VERSION
   spec.authors       = ["Kostiantyn Kahanskyi"]
   spec.email         = ["kostiantyn.kahanskyi@googlemail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{Experimental implementation of a Redis wrapper in Ruby}
+  spec.summary       = %q{Experimental implementation of a Redis wrapper in Ruby}
+  spec.homepage      = "https://github.com/kostia/redis_typer"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
