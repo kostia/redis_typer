@@ -19,13 +19,23 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-my_hash = RedisTyper::RedisHash.create('my_hash', spam: 'eggs')
-my_hash.spam   # => 'eggs'
-my_hash.update(xxx: 'zzz')
-my_hash.save
-my_hash.xxx    # => 'zzz'
-my_hash.length # => 2
-my_hash.values # => #<Set: {"eggs", "zzz"}>
+# Create
+h = RedisTyper::RedisHash.create('xxx', spam: 'eggs')
+h.spam
+# => 'eggs'
+
+# Read
+h = RedisTyper::RedisHash.read('xxx')
+h.spam
+# => 'eggs'
+
+# Update
+h.update(spam: 'breads')
+h.spam
+# => 'breads'
+
+# Delete
+RedisTyper::RedisHash.delete('xxx')
 ```
 
 ## Contributing
