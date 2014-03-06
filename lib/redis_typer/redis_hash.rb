@@ -14,6 +14,12 @@ class RedisHash < OpenStruct
       new(key, hash).tap { |redis_hash| redis_hash.save }
     end
 
+    def read(key)
+      if redis.exists(key)
+        new(key, redis.hgetall(key))
+      end
+    end
+
     def redis
       Redis.new
     end
