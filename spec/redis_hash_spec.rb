@@ -49,6 +49,41 @@ describe RedisHash do
       end
     end
   end
+
+  describe '#update' do
+    def update
+      subject.update(hash_key1: 'hash value 1*', hash_key3: 'hash value 3')
+    end
+
+    before { RedisHash.create('xxx', hash_key1: 'hash value 1', hash_key2: 'hash value 2') }
+
+    subject { RedisHash.read('xxx') }
+
+    it 'creates new hash entries' do
+      expect { update }.to change { redis.hget('xxx', :hash_key3) }.from(nil).to('hash value 3')
+    end
+
+    it 'adds new instance fields' do
+      expect { update }.to change { subject.hash_key3 }.from(nil).to('hash value 3')
+    end
+
+    it 'updates corresponding hash entries' do
+      expect { update }.to change { redis.hget('xxx', :hash_key1) }
+          .from('hash value 1').to('hash value 1*')
+    end
+
+    it 'updates corresponding instance fields' do
+      expect { update }.to change { subject.hash_key1 }.from('hash value 1').to('hash value 1*')
+    end
+
+    it 'deletes obsolete hash entries' do
+      expect { update }.to change { redis.hget('xxx', :hash_key2) }.from('hash value 2').to(nil)
+    end
+
+    it 'deletes obsolete instance fields' do
+      expect { update }.to change { subject.hash_key2 }.from('hash value 2').to(nil)
+    end
+  end
 end
 
 end

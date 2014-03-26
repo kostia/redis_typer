@@ -35,6 +35,12 @@ class RedisHash < OpenStruct
     redis.hmset(@key, *serialize)
   end
 
+  def update(hash)
+    assert_valid_keys(hash)
+    delete_obsolete_attributes(hash)
+    assign_attributes(hash)
+    save
+  end
   private
 
   def redis
@@ -47,6 +53,16 @@ class RedisHash < OpenStruct
         raise ForbiddenKeyError.new(%{Key "#{key}" is now allowed as hash key})
       end
     end
+  end
+
+  def assign_attributes(hash)
+    hash.each_pair { |k, v| send("#{k}=", v) }
+  end
+
+  def delete_obsolete_attributes(hash)
+    obsolete_keys = marshal_dump.keys - hash.keys
+    redis.hdel(@key, *obsolete_keys)
+    obsolete_keys.map &method(:delete_field)
   end
 
   def serialize
