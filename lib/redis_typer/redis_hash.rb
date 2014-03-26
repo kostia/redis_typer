@@ -47,6 +47,12 @@ class RedisHash < OpenStruct
     assign_attributes(hash)
     save
   end
+
+  def delete
+    redis.del(@key)
+    self
+  end
+
   private
 
   def redis

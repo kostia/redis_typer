@@ -116,6 +116,21 @@ describe RedisHash do
       expect { patch }.to_not change { redis.hget('xxx', :hash_key2) }
     end
   end
+
+  describe '#delete' do
+    before { RedisHash.create('xxx', hash_key1: 'hash value 1', hash_key2: 'hash value 2') }
+
+    subject { RedisHash.read('xxx') }
+
+    it 'deletes corresponding hash' do
+      expect { subject.delete }.to change { redis.hgetall('xxx') }
+          .from({'hash_key1' => 'hash value 1', 'hash_key2' => 'hash value 2'}).to({})
+    end
+
+    it 'returns instance of self' do
+      subject.delete.should eq(subject)
+    end
+  end
 end
 
 end
