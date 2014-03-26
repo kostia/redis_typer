@@ -84,6 +84,38 @@ describe RedisHash do
       expect { update }.to change { subject.hash_key2 }.from('hash value 2').to(nil)
     end
   end
+
+  describe '#patch' do
+    def patch
+      subject.patch(hash_key1: 'hash value 1*', hash_key3: 'hash value 3')
+    end
+
+    before { RedisHash.create('xxx', hash_key1: 'hash value 1', hash_key2: 'hash value 2') }
+
+    subject { RedisHash.read('xxx') }
+
+    it 'creates new hash entries' do
+      expect { patch }.to change { redis.hget('xxx', :hash_key3) }.from(nil).to('hash value 3')
+    end
+
+    it 'adds new instance fields' do
+      expect { patch }.to change { subject.hash_key3 }.from(nil).to('hash value 3')
+    end
+
+    it 'updates corresponding hash entries' do
+      expect { patch }.to change { redis.hget('xxx', :hash_key1) }
+          .from('hash value 1').to('hash value 1*')
+    end
+
+    it 'updates corresponding instance fields' do
+      expect { patch }.to change { subject.hash_key3 }.from(nil).to('hash value 3')
+    end
+
+    it 'keeps not mentioned hash entries and instance fields' do
+      expect { patch }.to_not change { subject.hash_key2 }
+      expect { patch }.to_not change { redis.hget('xxx', :hash_key2) }
+    end
+  end
 end
 
 end

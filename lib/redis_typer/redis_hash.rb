@@ -41,6 +41,12 @@ class RedisHash < OpenStruct
     assign_attributes(hash)
     save
   end
+
+  def patch(hash)
+    assert_valid_keys(hash)
+    assign_attributes(hash)
+    save
+  end
   private
 
   def redis
