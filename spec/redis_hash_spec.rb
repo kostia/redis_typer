@@ -1,16 +1,8 @@
-require 'redis_typer'
-
+require 'spec_helper'
 
 module RedisTyper
 
 describe RedisHash do
-  let(:redis) { Redis.new }
-
-  before do
-    keys = redis.keys('*')
-    redis.del(*keys) if keys.any?
-  end
-
   describe '.create' do
     it 'does not allow "key" as hash key' do
       expect { RedisHash.create('xxx', key: 'spam') }
