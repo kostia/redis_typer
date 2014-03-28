@@ -50,6 +50,22 @@ describe RedisHash do
     end
   end
 
+  describe '.redis' do
+    it 'returns an instance of redis client' do
+      redis.set('spam', 'eggs')
+      RedisHash.redis.get('spam').should eq('eggs')
+    end
+  end
+
+  describe '#redis' do
+    subject { RedisHash.create('xxx', hash_key1: 'hash value 1', hash_key2: 'hash value 2') }
+
+    it 'delegates to class redis' do
+      redis.set('spam', 'eggs')
+      subject.redis.get('spam').should eq('eggs')
+    end
+  end
+
   describe '#update' do
     def update
       subject.update(hash_key1: 'hash value 1*', hash_key3: 'hash value 3')

@@ -53,11 +53,11 @@ class RedisHash < OpenStruct
     self
   end
 
-  private
-
   def redis
     self.class.redis
   end
+
+  private
 
   def assert_valid_keys(hash)
     hash.each_key do |key|
